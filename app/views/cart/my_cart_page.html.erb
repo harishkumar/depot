@@ -1,0 +1,30 @@
+<%unless @car.blank?%>
+<%=form_for :cart do |h|%>
+<table cellpadding="2" border="1" cellspacing="1">
+ <tr><td>confirm</td><td>Quantity</td><td>Name</td><td>Description</td><td>Price</td><td>Total Price</td></tr>
+<%@car.each do |car|%>
+ <tr><td><%=h.check_box "confirm#{car.id}"%></td><td>
+      <%= select "cart","quantity#{car.id}", [1,2,3,4,5],{:prompt=>"Quantity"},
+        { :onchange => "$.ajax({url: '../cart/display_total',
+        data: 'count=' + value + '&cart=' + #{car.id}})"}%>
+        </td>
+     <td><%=Product.find(car.product_id).name%></td>
+     <td><%=car.description%></td>
+     <td id="price"><%=Product.find(car.product_id).price%></td>
+     <td id="total<%=car.id%>"></td></tr>
+   <%end%>
+</table>
+<%= link_to 'Go To Shopping Catalog',:controller=>"buyer",:action=>"catalog" %>
+<%= h.submit 'Save and Pay' %>
+<%end%>
+
+<%else%>
+No Items Added To Cart <%= link_to 'Go To Shopping Catalog',:controller=>"buyer",:action=>"catalog" %>
+<%end%>
+
+<script type="text/javascript">
+ 
+
+
+</script>
+
